@@ -3,27 +3,29 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-# 1
+#It reads the csv file "medical_examination"
 df = pd.read_csv('medical_examination.csv')
 
-# 2'
+#It calculates the ratio of weight per height divided by 100, and finally raisedd in the second power
 bmi = df['weight']/((df['height']/ 100)**2)
+#We create a new column including only the values over 25 bmi and saves all the values as integers
 df['overweight'] = (bmi>25).astype(int)
 
-# 3
+#If cholesterol is over 1 it returns True and replaces the cholysterol value with 1. Otherwise it replaces the cholysterol value with 0
 df['cholesterol'] = (df['cholesterol'] > 1).astype(int)
+#If gluc is over 1 it returns True and replaces the gluc value with 1. Otherwise it replaces the gluc value with 0
 df['gluc'] = (df['gluc'] > 1).astype(int)
 
 # 4
 def draw_cat_plot():
-    # 5
+    #It reshapes the dataframe. Before that we had 1 row per patient. Now we are having 6 rows per patient
     df_cat = pd.melt(
         df,
         id_vars=['cardio'],
         value_vars=['cholesterol', 'gluc', 'smoke', 'alco', 'active', 'overweight']
     )
 
-    # 6
+    #
     df_cat = df_cat.groupby(['cardio', 'variable', 'value']).size().reset_index(name='total')
 
     # 7
